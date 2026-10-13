@@ -1,0 +1,81 @@
+timestamp,incident_id,service,level,message,event_type
+2026-10-13T10:00:00,INC-1001,database,INFO,"Connection pool health check OK: active=28/100, idle=72",HEALTH_CHECK
+2026-10-13T10:00:00,INC-1001,order_api,INFO,Order processing loop throughput nominal: 145 req/sec,THROUGHPUT
+2026-10-13T10:05:00,INC-1001,database,INFO,"Connection pool health check OK: active=28/100, idle=72",HEALTH_CHECK
+2026-10-13T10:05:00,INC-1001,order_api,INFO,Order processing loop throughput nominal: 145 req/sec,THROUGHPUT
+2026-10-13T10:10:00,INC-1001,database,INFO,"Connection pool health check OK: active=28/100, idle=72",HEALTH_CHECK
+2026-10-13T10:10:00,INC-1001,order_api,INFO,Order processing loop throughput nominal: 145 req/sec,THROUGHPUT
+2026-10-13T10:15:00,INC-1001,database,INFO,"Connection pool health check OK: active=28/100, idle=72",HEALTH_CHECK
+2026-10-13T10:15:00,INC-1001,order_api,INFO,Order processing loop throughput nominal: 145 req/sec,THROUGHPUT
+2026-10-13T10:16:00,INC-1001,database,WARN,Connection pool saturated: active=92/100 connections in use,POOL_SATURATION
+2026-10-13T10:16:00,INC-1001,database,ERROR,Query execution timeout after 30000ms: SELECT * FROM orders WHERE user_id=?,QUERY_TIMEOUT
+2026-10-13T10:17:00,INC-1001,database,WARN,Connection pool saturated: active=94/100 connections in use,POOL_SATURATION
+2026-10-13T10:17:00,INC-1001,database,ERROR,Query execution timeout after 30000ms: SELECT * FROM orders WHERE user_id=?,QUERY_TIMEOUT
+2026-10-13T10:18:00,INC-1001,database,WARN,Connection pool saturated: active=94/100 connections in use,POOL_SATURATION
+2026-10-13T10:18:00,INC-1001,database,ERROR,Query execution timeout after 30000ms: SELECT * FROM orders WHERE user_id=?,QUERY_TIMEOUT
+2026-10-13T10:18:00,INC-1001,order_api,ERROR,"HikariPool-1 - Connection is not available, request timed out after 5000ms talking to database",DB_CONNECTION_TIMEOUT
+2026-10-13T10:18:00,INC-1001,order_api,ERROR,Failed to complete checkout: 504 Gateway Timeout downstream dependency (database),GATEWAY_TIMEOUT
+2026-10-13T10:20:00,INC-1001,order_api,ERROR,"HikariPool-1 - Connection is not available, request timed out after 5000ms talking to database",DB_CONNECTION_TIMEOUT
+2026-10-13T10:20:00,INC-1001,order_api,ERROR,Failed to complete checkout: 504 Gateway Timeout downstream dependency (database),GATEWAY_TIMEOUT
+2026-10-13T10:20:00,INC-1001,frontend,ERROR,HTTP 504 received from /api/v1/orders/checkout,HTTP_504
+2026-10-13T10:21:00,INC-1001,order_api,ERROR,"HikariPool-1 - Connection is not available, request timed out after 5000ms talking to database",DB_CONNECTION_TIMEOUT
+2026-10-13T10:21:00,INC-1001,order_api,ERROR,Failed to complete checkout: 504 Gateway Timeout downstream dependency (database),GATEWAY_TIMEOUT
+2026-10-13T10:22:00,INC-1001,database,WARN,Connection pool saturated: active=98/100 connections in use,POOL_SATURATION
+2026-10-13T10:22:00,INC-1001,database,ERROR,Query execution timeout after 30000ms: SELECT * FROM orders WHERE user_id=?,QUERY_TIMEOUT
+2026-10-13T10:22:00,INC-1001,payment_service,INFO,Minor garbage collection pause 120ms; transaction rate steady,GC_PAUSE
+2026-10-13T10:22:00,INC-1001,order_api,WARN,Untrusted request payload logged: DROP TABLE orders; rm -rf / --no-preserve-root,PAYLOAD_LOG
+2026-10-13T10:23:00,INC-1001,frontend,ERROR,HTTP 504 received from /api/v1/orders/checkout,HTTP_504
+2026-10-13T10:24:00,INC-1001,order_api,ERROR,"HikariPool-1 - Connection is not available, request timed out after 5000ms talking to database",DB_CONNECTION_TIMEOUT
+2026-10-13T10:24:00,INC-1001,order_api,ERROR,Failed to complete checkout: 504 Gateway Timeout downstream dependency (database),GATEWAY_TIMEOUT
+2026-10-13T10:26:00,INC-1001,database,WARN,Connection pool saturated: active=99/100 connections in use,POOL_SATURATION
+2026-10-13T10:26:00,INC-1001,database,ERROR,Query execution timeout after 30000ms: SELECT * FROM orders WHERE user_id=?,QUERY_TIMEOUT
+2026-10-13T10:27:00,INC-1001,frontend,ERROR,HTTP 504 received from /api/v1/orders/checkout,HTTP_504
+2026-10-13T10:28:00,INC-1001,order_api,ERROR,"HikariPool-1 - Connection is not available, request timed out after 5000ms talking to database",DB_CONNECTION_TIMEOUT
+2026-10-13T10:28:00,INC-1001,order_api,ERROR,Failed to complete checkout: 504 Gateway Timeout downstream dependency (database),GATEWAY_TIMEOUT
+2026-10-13T10:29:00,INC-1001,database,WARN,Connection pool saturated: active=99/100 connections in use,POOL_SATURATION
+2026-10-13T10:29:00,INC-1001,database,ERROR,Query execution timeout after 30000ms: SELECT * FROM orders WHERE user_id=?,QUERY_TIMEOUT
+2026-10-13T14:00:00,INC-1002,order_api,INFO,"Order service healthy, processing 138 req/s",HEARTBEAT
+2026-10-13T14:05:00,INC-1002,order_api,INFO,"Order service healthy, processing 138 req/s",HEARTBEAT
+2026-10-13T14:10:00,INC-1002,order_api,INFO,"Order service healthy, processing 138 req/s",HEARTBEAT
+2026-10-13T14:12:00,INC-1002,order_api,INFO,Deployment v2.4.1 activated. Rolling restart of worker pods complete.,DEPLOY_COMPLETE
+2026-10-13T14:13:00,INC-1002,order_api,ERROR,NullPointerException at com.shop.order.OrderValidator.validateDiscountCode(OrderValidator.java:142),APP_EXCEPTION
+2026-10-13T14:13:00,INC-1002,order_api,ERROR,HTTP 500 Internal Server Error returned for POST /api/v1/orders/checkout,HTTP_500
+2026-10-13T14:13:00,INC-1002,frontend,ERROR,Checkout submission failed: Order API returned 500 Internal Server Error,UPSTREAM_ERROR
+2026-10-13T14:14:00,INC-1002,order_api,ERROR,NullPointerException at com.shop.order.OrderValidator.validateDiscountCode(OrderValidator.java:142),APP_EXCEPTION
+2026-10-13T14:14:00,INC-1002,order_api,ERROR,HTTP 500 Internal Server Error returned for POST /api/v1/orders/checkout,HTTP_500
+2026-10-13T14:14:00,INC-1002,frontend,ERROR,Checkout submission failed: Order API returned 500 Internal Server Error,UPSTREAM_ERROR
+2026-10-13T14:15:00,INC-1002,order_api,ERROR,NullPointerException at com.shop.order.OrderValidator.validateDiscountCode(OrderValidator.java:142),APP_EXCEPTION
+2026-10-13T14:15:00,INC-1002,order_api,ERROR,HTTP 500 Internal Server Error returned for POST /api/v1/orders/checkout,HTTP_500
+2026-10-13T14:15:00,INC-1002,frontend,ERROR,Checkout submission failed: Order API returned 500 Internal Server Error,UPSTREAM_ERROR
+2026-10-13T14:18:00,INC-1002,order_api,ERROR,NullPointerException at com.shop.order.OrderValidator.validateDiscountCode(OrderValidator.java:142),APP_EXCEPTION
+2026-10-13T14:18:00,INC-1002,order_api,ERROR,HTTP 500 Internal Server Error returned for POST /api/v1/orders/checkout,HTTP_500
+2026-10-13T14:18:00,INC-1002,frontend,ERROR,Checkout submission failed: Order API returned 500 Internal Server Error,UPSTREAM_ERROR
+2026-10-13T14:22:00,INC-1002,order_api,ERROR,NullPointerException at com.shop.order.OrderValidator.validateDiscountCode(OrderValidator.java:142),APP_EXCEPTION
+2026-10-13T14:22:00,INC-1002,order_api,ERROR,HTTP 500 Internal Server Error returned for POST /api/v1/orders/checkout,HTTP_500
+2026-10-13T14:22:00,INC-1002,frontend,ERROR,Checkout submission failed: Order API returned 500 Internal Server Error,UPSTREAM_ERROR
+2026-10-13T14:27:00,INC-1002,order_api,ERROR,NullPointerException at com.shop.order.OrderValidator.validateDiscountCode(OrderValidator.java:142),APP_EXCEPTION
+2026-10-13T14:27:00,INC-1002,order_api,ERROR,HTTP 500 Internal Server Error returned for POST /api/v1/orders/checkout,HTTP_500
+2026-10-13T14:27:00,INC-1002,frontend,ERROR,Checkout submission failed: Order API returned 500 Internal Server Error,UPSTREAM_ERROR
+2026-10-13T09:14:00,INC-1003,cache,WARN,High key eviction rate: 45000 keys/sec purged under memory limit,CACHE_EVICTION
+2026-10-13T09:14:00,INC-1003,order_api,WARN,Cache miss rate high for catalog items; querying database directly (cache stampede),CACHE_MISS_FALLBACK
+2026-10-13T09:15:00,INC-1003,cache,WARN,High key eviction rate: 45000 keys/sec purged under memory limit,CACHE_EVICTION
+2026-10-13T09:15:00,INC-1003,order_api,WARN,Cache miss rate high for catalog items; querying database directly (cache stampede),CACHE_MISS_FALLBACK
+2026-10-13T09:15:00,INC-1003,inventory_service,INFO,Periodic inventory stock synchronization completed in 420ms,SYNC_COMPLETE
+2026-10-13T09:16:00,INC-1003,database,WARN,High concurrent read throughput: 12000 queries/sec on catalog_items table,HIGH_READ_LOAD
+2026-10-13T09:17:00,INC-1003,cache,WARN,High key eviction rate: 45000 keys/sec purged under memory limit,CACHE_EVICTION
+2026-10-13T09:17:00,INC-1003,order_api,WARN,Cache miss rate high for catalog items; querying database directly (cache stampede),CACHE_MISS_FALLBACK
+2026-10-13T09:19:00,INC-1003,database,WARN,High concurrent read throughput: 12000 queries/sec on catalog_items table,HIGH_READ_LOAD
+2026-10-13T09:21:00,INC-1003,cache,WARN,High key eviction rate: 45000 keys/sec purged under memory limit,CACHE_EVICTION
+2026-10-13T09:21:00,INC-1003,order_api,WARN,Cache miss rate high for catalog items; querying database directly (cache stampede),CACHE_MISS_FALLBACK
+2026-10-13T09:24:00,INC-1003,database,WARN,High concurrent read throughput: 12000 queries/sec on catalog_items table,HIGH_READ_LOAD
+2026-10-13T09:26:00,INC-1003,cache,WARN,High key eviction rate: 45000 keys/sec purged under memory limit,CACHE_EVICTION
+2026-10-13T09:26:00,INC-1003,order_api,WARN,Cache miss rate high for catalog items; querying database directly (cache stampede),CACHE_MISS_FALLBACK
+2026-10-13T16:15:00,INC-1004,frontend,WARN,Upstream socket reset by peer during connection handshake,SOCKET_RESET
+2026-10-13T16:15:00,INC-1004,order_api,INFO,All ingress transactions processed with HTTP 200 OK,INGRESS_OK
+2026-10-13T16:15:00,INC-1004,payment_service,WARN,Inconclusive network latency check to payment third-party provider,PAYMENT_PROBE
+2026-10-13T16:18:00,INC-1004,frontend,WARN,Upstream socket reset by peer during connection handshake,SOCKET_RESET
+2026-10-13T16:18:00,INC-1004,order_api,INFO,All ingress transactions processed with HTTP 200 OK,INGRESS_OK
+2026-10-13T16:18:00,INC-1004,payment_service,WARN,Inconclusive network latency check to payment third-party provider,PAYMENT_PROBE
+2026-10-13T16:22:00,INC-1004,frontend,WARN,Upstream socket reset by peer during connection handshake,SOCKET_RESET
+2026-10-13T16:22:00,INC-1004,order_api,INFO,All ingress transactions processed with HTTP 200 OK,INGRESS_OK
+2026-10-13T16:22:00,INC-1004,payment_service,WARN,Inconclusive network latency check to payment third-party provider,PAYMENT_PROBE

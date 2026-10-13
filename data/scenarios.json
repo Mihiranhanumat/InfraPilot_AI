@@ -1,0 +1,46 @@
+[
+  {
+    "incident_id": "INC-1001",
+    "title": "Database Latency Spike & Connection Saturation",
+    "severity": "CRITICAL",
+    "incident_summary": "Order API p95 latency spiked above 2000ms with elevated 504 Gateway Timeouts impacting checkout flow. Users unable to place orders.",
+    "affected_services": ["order_api", "frontend"],
+    "baseline_window": ["2026-10-13T10:00:00", "2026-10-13T10:15:00"],
+    "incident_window": ["2026-10-13T10:16:00", "2026-10-13T10:30:00"],
+    "expected_cause_family": "database",
+    "distractor_note": "Payment service minor memory utilization variance at 10:22."
+  },
+  {
+    "incident_id": "INC-1002",
+    "title": "Deployment-Induced Order API Regression",
+    "severity": "HIGH",
+    "incident_summary": "Surge in HTTP 500 Internal Server Errors on order checkout endpoint immediately following mid-day service update.",
+    "affected_services": ["order_api", "frontend"],
+    "baseline_window": ["2026-10-13T14:00:00", "2026-10-13T14:11:00"],
+    "incident_window": ["2026-10-13T14:12:00", "2026-10-13T14:30:00"],
+    "expected_cause_family": "deployment",
+    "distractor_note": "Cache hit rate slight drop from 93% to 89% during cache warming."
+  },
+  {
+    "incident_id": "INC-1003",
+    "title": "Cache Degradation & Cascading Database Load",
+    "severity": "HIGH",
+    "incident_summary": "Order API and Database latencies increasing following abrupt cache miss spike across product and order session reads.",
+    "affected_services": ["cache", "database", "order_api"],
+    "baseline_window": ["2026-10-13T09:00:00", "2026-10-13T09:12:00"],
+    "incident_window": ["2026-10-13T09:14:00", "2026-10-13T09:30:00"],
+    "expected_cause_family": "cache",
+    "distractor_note": "Inventory service background catalog sync at 09:15."
+  },
+  {
+    "incident_id": "INC-1004",
+    "title": "Inconclusive Signal & Telemetry Dropout",
+    "severity": "MEDIUM",
+    "incident_summary": "Sporadic 503 errors reported on Frontend, but telemetry metrics for upstream database show missing data and conflicting logs.",
+    "affected_services": ["frontend"],
+    "baseline_window": ["2026-10-13T16:00:00", "2026-10-13T16:10:00"],
+    "incident_window": ["2026-10-13T16:11:00", "2026-10-13T16:30:00"],
+    "expected_cause_family": "human_review",
+    "distractor_note": "Missing database metrics and contradictory payment status codes."
+  }
+]

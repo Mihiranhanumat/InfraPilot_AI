@@ -1,0 +1,404 @@
+{
+  "incident_id": "INC-1001",
+  "title": "Database Latency Spike & Connection Saturation",
+  "generated_at": "2026-10-14 00:08:09 UTC",
+  "status": "Validated hypothesis",
+  "symptoms": [
+    "Order API p95 latency spiked above 2000ms with elevated 504 Gateway Timeouts impacting checkout flow. Users unable to place orders."
+  ],
+  "critic_decision": "PASS",
+  "confidence_label": "Heuristic Evidence Score (Transparent Multi-Source Metric)",
+  "leading_hypothesis": {
+    "rank": 1,
+    "candidate_service": "database",
+    "claim": "Database latency elevation and connection pool saturation is the primary upstream root cause.",
+    "heuristic_score": 0.99,
+    "score_breakdown": {
+      "metric_support": 1.0,
+      "log_support": 1.0,
+      "dependency_support": 0.95,
+      "timeline_support": 1.0,
+      "contradiction_penalty": 0.0,
+      "aggregate_heuristic_score": 0.99
+    },
+    "supporting_evidence_ids": [
+      "METRIC-DAT-01",
+      "METRIC-DAT-04",
+      "METRIC-DAT-05",
+      "LOG-DAT-01",
+      "LOG-DAT-03",
+      "EVENT-DAT-01",
+      "EVENT-DAT-02",
+      "DEP-DAT-03"
+    ],
+    "contradicting_evidence_ids": [],
+    "timeline_fit": "database anomaly began at 2026-10-13T10:16:00, strictly preceding downstream symptom onset at 2026-10-13T10:18:00.",
+    "dependency_fit": "database is an upstream dependency topologically connected to symptom services (order_api, frontend).",
+    "reasoning": "Database metrics show sharp connection exhaustion and p95 latency elevation preceding Order API latency spikes. Database timeout logs match the failure window, and Order API directly depends on the database for checkout transactions.",
+    "limitations": "Heuristic evidence score based on synthetic local telemetry. Correlations establish strong hypothesis, but causality is supported rather than definitively proven without internal tracing/query-plan telemetry."
+  },
+  "all_hypotheses": [
+    {
+      "rank": 1,
+      "candidate_service": "database",
+      "claim": "Database latency elevation and connection pool saturation is the primary upstream root cause.",
+      "heuristic_score": 0.99,
+      "score_breakdown": {
+        "metric_support": 1.0,
+        "log_support": 1.0,
+        "dependency_support": 0.95,
+        "timeline_support": 1.0,
+        "contradiction_penalty": 0.0,
+        "aggregate_heuristic_score": 0.99
+      },
+      "supporting_evidence_ids": [
+        "METRIC-DAT-01",
+        "METRIC-DAT-04",
+        "METRIC-DAT-05",
+        "LOG-DAT-01",
+        "LOG-DAT-03",
+        "EVENT-DAT-01",
+        "EVENT-DAT-02",
+        "DEP-DAT-03"
+      ],
+      "contradicting_evidence_ids": [],
+      "timeline_fit": "database anomaly began at 2026-10-13T10:16:00, strictly preceding downstream symptom onset at 2026-10-13T10:18:00.",
+      "dependency_fit": "database is an upstream dependency topologically connected to symptom services (order_api, frontend).",
+      "reasoning": "Database metrics show sharp connection exhaustion and p95 latency elevation preceding Order API latency spikes. Database timeout logs match the failure window, and Order API directly depends on the database for checkout transactions.",
+      "limitations": "Heuristic evidence score based on synthetic local telemetry. Correlations establish strong hypothesis, but causality is supported rather than definitively proven without internal tracing/query-plan telemetry."
+    },
+    {
+      "rank": 2,
+      "candidate_service": "order_api",
+      "claim": "Service 'order_api' exhibits anomalous signals that correlate with the ongoing incident.",
+      "heuristic_score": 0.88,
+      "score_breakdown": {
+        "metric_support": 1.0,
+        "log_support": 1.0,
+        "dependency_support": 0.7,
+        "timeline_support": 0.75,
+        "contradiction_penalty": 0.0,
+        "aggregate_heuristic_score": 0.88
+      },
+      "supporting_evidence_ids": [
+        "METRIC-ORD-02",
+        "METRIC-ORD-06",
+        "LOG-DAT-01",
+        "LOG-ORD-02",
+        "EVENT-ORD-03"
+      ],
+      "contradicting_evidence_ids": [],
+      "timeline_fit": "order_api anomaly synchronized with symptom onset at 2026-10-13T10:18:00.",
+      "dependency_fit": "order_api is an immediate endpoint experiencing reported symptoms.",
+      "reasoning": "Telemetry signals on order_api exhibit divergence from baseline. Supporting evidence IDs: METRIC-ORD-02, METRIC-ORD-06, LOG-DAT-01, LOG-ORD-02, EVENT-ORD-03.",
+      "limitations": "Heuristic evidence score based on synthetic local telemetry. Correlations establish strong hypothesis, but causality is supported rather than definitively proven without internal tracing/query-plan telemetry."
+    },
+    {
+      "rank": 3,
+      "candidate_service": "frontend",
+      "claim": "Service 'frontend' exhibits anomalous signals that correlate with the ongoing incident.",
+      "heuristic_score": 0.72,
+      "score_breakdown": {
+        "metric_support": 1.0,
+        "log_support": 0.8,
+        "dependency_support": 0.7,
+        "timeline_support": 0.2,
+        "contradiction_penalty": 0.0,
+        "aggregate_heuristic_score": 0.72
+      },
+      "supporting_evidence_ids": [
+        "METRIC-FRO-03",
+        "METRIC-FRO-07",
+        "LOG-ORD-02"
+      ],
+      "contradicting_evidence_ids": [],
+      "timeline_fit": "frontend anomaly onset (2026-10-13T10:19:00) lagged after symptoms (2026-10-13T10:18:00). Likely downstream symptom, not cause.",
+      "dependency_fit": "frontend is an immediate endpoint experiencing reported symptoms.",
+      "reasoning": "Telemetry signals on frontend exhibit divergence from baseline. Supporting evidence IDs: METRIC-FRO-03, METRIC-FRO-07, LOG-ORD-02.",
+      "limitations": "Heuristic evidence score based on synthetic local telemetry. Correlations establish strong hypothesis, but causality is supported rather than definitively proven without internal tracing/query-plan telemetry."
+    }
+  ],
+  "evidence_trail": [
+    {
+      "evidence_id": "METRIC-DAT-01",
+      "source_type": "metric",
+      "service": "database",
+      "description": "database p95_latency_ms rose from baseline 11.51ms to 1387.96ms (+11962.6%), earliest onset 2026-10-13T10:16:00.",
+      "support_type": "supports",
+      "timestamp": "2026-10-13T10:16:00",
+      "confidence_weight": 1.0,
+      "limitations": "Synthetically sampled metrics over 1-minute intervals."
+    },
+    {
+      "evidence_id": "METRIC-ORD-02",
+      "source_type": "metric",
+      "service": "order_api",
+      "description": "order_api p95_latency_ms rose from baseline 40.56ms to 2022.27ms (+4885.5%), earliest onset 2026-10-13T10:18:00.",
+      "support_type": "supports",
+      "timestamp": "2026-10-13T10:18:00",
+      "confidence_weight": 1.0,
+      "limitations": "Synthetically sampled metrics over 1-minute intervals."
+    },
+    {
+      "evidence_id": "METRIC-FRO-03",
+      "source_type": "metric",
+      "service": "frontend",
+      "description": "frontend p95_latency_ms rose from baseline 64.56ms to 1956.4ms (+2930.1%), earliest onset 2026-10-13T10:19:00.",
+      "support_type": "supports",
+      "timestamp": "2026-10-13T10:19:00",
+      "confidence_weight": 1.0,
+      "limitations": "Synthetically sampled metrics over 1-minute intervals."
+    },
+    {
+      "evidence_id": "METRIC-DAT-04",
+      "source_type": "metric",
+      "service": "database",
+      "description": "database db_connections_pct rose from baseline 28.66% to 96.97% (+238.4%), earliest onset 2026-10-13T10:16:00.",
+      "support_type": "supports",
+      "timestamp": "2026-10-13T10:16:00",
+      "confidence_weight": 0.99,
+      "limitations": "Synthetically sampled metrics over 1-minute intervals."
+    },
+    {
+      "evidence_id": "METRIC-DAT-05",
+      "source_type": "metric",
+      "service": "database",
+      "description": "database cpu_pct rose from baseline 24.51% to 78.07% (+218.5%), earliest onset 2026-10-13T10:16:00.",
+      "support_type": "supports",
+      "timestamp": "2026-10-13T10:16:00",
+      "confidence_weight": 0.89,
+      "limitations": "Synthetically sampled metrics over 1-minute intervals."
+    },
+    {
+      "evidence_id": "METRIC-ORD-06",
+      "source_type": "metric",
+      "service": "order_api",
+      "description": "order_api error_rate_pct rose from baseline 0.12% to 16.0% (+13516.4%), earliest onset 2026-10-13T10:18:00.",
+      "support_type": "supports",
+      "timestamp": "2026-10-13T10:18:00",
+      "confidence_weight": 0.66,
+      "limitations": "Synthetically sampled metrics over 1-minute intervals."
+    },
+    {
+      "evidence_id": "METRIC-FRO-07",
+      "source_type": "metric",
+      "service": "frontend",
+      "description": "frontend error_rate_pct rose from baseline 0.06% to 13.75% (+23804.3%), earliest onset 2026-10-13T10:19:00.",
+      "support_type": "supports",
+      "timestamp": "2026-10-13T10:19:00",
+      "confidence_weight": 0.64,
+      "limitations": "Synthetically sampled metrics over 1-minute intervals."
+    },
+    {
+      "evidence_id": "EVENT-DAT-01",
+      "source_type": "event",
+      "service": "database",
+      "description": "Operational event [MAINTENANCE]: Routine database index defragmentation completed successfully.",
+      "support_type": "supports",
+      "timestamp": "2026-10-13T02:00:00",
+      "confidence_weight": 0.7,
+      "limitations": "Operational events logged via automated CI/CD and monitoring hooks."
+    },
+    {
+      "evidence_id": "EVENT-DAT-02",
+      "source_type": "event",
+      "service": "database",
+      "description": "Operational event [ALERT_FIRED]: DBConnectionPoolSaturation: Active connections exceeded 90% threshold.",
+      "support_type": "supports",
+      "timestamp": "2026-10-13T10:16:30",
+      "confidence_weight": 0.7,
+      "limitations": "Operational events logged via automated CI/CD and monitoring hooks."
+    },
+    {
+      "evidence_id": "EVENT-ORD-03",
+      "source_type": "event",
+      "service": "order_api",
+      "description": "Operational event [ALERT_FIRED]: ServiceLatencyP95Critical: Order API latency breached 2000ms SLO.",
+      "support_type": "supports",
+      "timestamp": "2026-10-13T10:19:00",
+      "confidence_weight": 0.7,
+      "limitations": "Operational events logged via automated CI/CD and monitoring hooks."
+    },
+    {
+      "evidence_id": "LOG-DAT-01",
+      "source_type": "log",
+      "service": "database",
+      "description": "Log cluster 'DB_TIMEOUT_OR_EXHAUSTION' (16 occurrences, WARN) on database, order_api. Sample: \"Connection pool saturated: active=92/100 connections in use\"",
+      "support_type": "supports",
+      "timestamp": "2026-10-13T10:16:00",
+      "confidence_weight": 0.85,
+      "limitations": "Logs are untrusted telemetry; messages parsed as evidence, never executed."
+    },
+    {
+      "evidence_id": "LOG-ORD-02",
+      "source_type": "log",
+      "service": "order_api",
+      "description": "Log cluster 'HTTP_5XX_ERROR' (8 occurrences, ERROR) on order_api, frontend. Sample: \"Failed to complete checkout: 504 Gateway Timeout downstream dependency (database)\"",
+      "support_type": "supports",
+      "timestamp": "2026-10-13T10:18:00",
+      "confidence_weight": 0.85,
+      "limitations": "Logs are untrusted telemetry; messages parsed as evidence, never executed."
+    },
+    {
+      "evidence_id": "LOG-DAT-03",
+      "source_type": "log",
+      "service": "database",
+      "description": "Log cluster 'QUERY_LATENCY_OR_TIMEOUT' (6 occurrences, ERROR) on database. Sample: \"Query execution timeout after 30000ms: SELECT * FROM orders WHERE user_id=?\"",
+      "support_type": "supports",
+      "timestamp": "2026-10-13T10:16:00",
+      "confidence_weight": 0.85,
+      "limitations": "Logs are untrusted telemetry; messages parsed as evidence, never executed."
+    },
+    {
+      "evidence_id": "DEP-FRO-01",
+      "source_type": "dependency",
+      "service": "frontend",
+      "description": "Topology verification: 'frontend' is an upstream dependency of symptom services (order_api, frontend). Call paths: frontend (direct symptom).",
+      "support_type": "supports",
+      "timestamp": null,
+      "confidence_weight": 0.9,
+      "limitations": "Static service dependency configuration from services.csv."
+    },
+    {
+      "evidence_id": "DEP-ORD-02",
+      "source_type": "dependency",
+      "service": "order_api",
+      "description": "Topology verification: 'order_api' is an upstream dependency of symptom services (order_api, frontend). Call paths: order_api (direct symptom); frontend -> order_api.",
+      "support_type": "supports",
+      "timestamp": null,
+      "confidence_weight": 0.9,
+      "limitations": "Static service dependency configuration from services.csv."
+    },
+    {
+      "evidence_id": "DEP-DAT-03",
+      "source_type": "dependency",
+      "service": "database",
+      "description": "Topology verification: 'database' is an upstream dependency of symptom services (order_api, frontend). Call paths: order_api -> database; frontend -> order_api -> database.",
+      "support_type": "supports",
+      "timestamp": null,
+      "confidence_weight": 0.9,
+      "limitations": "Static service dependency configuration from services.csv."
+    },
+    {
+      "evidence_id": "DEP-PAY-04",
+      "source_type": "dependency",
+      "service": "payment_service",
+      "description": "Topology verification: 'payment_service' is an upstream dependency of symptom services (order_api, frontend). Call paths: order_api -> payment_service; frontend -> order_api -> payment_service.",
+      "support_type": "supports",
+      "timestamp": null,
+      "confidence_weight": 0.9,
+      "limitations": "Static service dependency configuration from services.csv."
+    },
+    {
+      "evidence_id": "DEP-INV-05",
+      "source_type": "dependency",
+      "service": "inventory_service",
+      "description": "Topology verification: 'inventory_service' is an upstream dependency of symptom services (order_api, frontend). Call paths: order_api -> inventory_service; frontend -> order_api -> inventory_service.",
+      "support_type": "supports",
+      "timestamp": null,
+      "confidence_weight": 0.9,
+      "limitations": "Static service dependency configuration from services.csv."
+    },
+    {
+      "evidence_id": "DEP-CAC-06",
+      "source_type": "dependency",
+      "service": "cache",
+      "description": "Topology verification: 'cache' is an upstream dependency of symptom services (order_api, frontend). Call paths: order_api -> cache; frontend -> order_api -> cache.",
+      "support_type": "supports",
+      "timestamp": null,
+      "confidence_weight": 0.9,
+      "limitations": "Static service dependency configuration from services.csv."
+    },
+    {
+      "evidence_id": "DIAG-DAT-01",
+      "source_type": "diagnostic",
+      "service": "database",
+      "description": "Read-only diagnostic battery completed: 3/3 active checks passed for hypothesis 'Database latency elevation and connection pool saturation is the primary upstream root cause.'.",
+      "support_type": "supports",
+      "timestamp": null,
+      "confidence_weight": 0.9,
+      "limitations": "Non-intrusive historical window diagnostics only."
+    }
+  ],
+  "diagnostics": [
+    {
+      "test_name": "Topological Viability Test",
+      "passed": true,
+      "details": "Candidate 'database' has valid caller paths to ['order_api', 'frontend']",
+      "evidence_ids": [
+        "DEP-DAT-03"
+      ]
+    },
+    {
+      "test_name": "Timeline Precedence Test",
+      "passed": true,
+      "details": "database (p95_latency_ms) anomaly began at 2026-10-13T10:16:00, preceding order_api (p95_latency_ms) at 2026-10-13T10:18:00 by 120.0s.",
+      "evidence_ids": [
+        "METRIC-DAT-01",
+        "METRIC-DAT-04",
+        "METRIC-DAT-05"
+      ]
+    },
+    {
+      "test_name": "Log Correlation Verification",
+      "passed": true,
+      "details": "Found 12 logs matching 'timeout|error|exception|saturated|eviction' on service database after 2026-10-13T10:16:00.",
+      "evidence_ids": [
+        "LOG-DAT-01",
+        "LOG-DAT-03"
+      ]
+    }
+  ],
+  "recovery_recommendations": [
+    {
+      "step_number": 1,
+      "action": "Inspect active database queries and slow query logs for unindexed scans or connection pool locks.",
+      "category": "QUERY_INVESTIGATION",
+      "target_service": "database",
+      "rationale": "Pinpoint long-running blocking queries causing thread saturation without restarting the cluster.",
+      "risk_level": "LOW",
+      "is_reversible": true,
+      "post_verification_check": "Observe active connection count drop below 70% threshold in monitoring dashboard.",
+      "status": "RECOMMENDATION_ONLY",
+      "requires_human_approval": true
+    },
+    {
+      "step_number": 2,
+      "action": "Review database connection pool settings and HikariCP maximumPoolSize across Order API worker instances.",
+      "category": "CONNECTION_POOL_TUNING",
+      "target_service": "order_api",
+      "rationale": "Prevent connection exhaustion cascades while queries are being optimized.",
+      "risk_level": "LOW",
+      "is_reversible": true,
+      "post_verification_check": "Verify Order API connection wait time drops below 50ms.",
+      "status": "RECOMMENDATION_ONLY",
+      "requires_human_approval": true
+    },
+    {
+      "step_number": 3,
+      "action": "Compare recent database schema changes or index migrations against incident onset timestamp.",
+      "category": "CONFIGURATION_AUDIT",
+      "target_service": "database",
+      "rationale": "Rule out inadvertent index drops or locks introduced by automated migration jobs.",
+      "risk_level": "LOW",
+      "is_reversible": true,
+      "post_verification_check": "Confirm query execution plan cost matches pre-incident baseline.",
+      "status": "RECOMMENDATION_ONLY",
+      "requires_human_approval": true
+    },
+    {
+      "step_number": 4,
+      "action": "Monitor downstream Order API p95 latency and HTTP 504 error rate after authorized engineer intervention.",
+      "category": "DOWNSTREAM_MONITORING",
+      "target_service": "order_api",
+      "rationale": "Ensure recovery propagates downstream to restore end-to-end checkout functionality.",
+      "risk_level": "LOW",
+      "is_reversible": true,
+      "post_verification_check": "Confirm Order API p95 latency stabilizes below 60ms and error rate < 0.2%.",
+      "status": "RECOMMENDATION_ONLY",
+      "requires_human_approval": true
+    }
+  ],
+  "limitations_disclaimer": "Synthetically generated local telemetry. Correlations establish strong hypotheses, but causality is supported rather than definitively proven. No production claims or absolute certainty guaranteed.",
+  "safety_notice": "SIMULATION ONLY: Read-only diagnostics. No real cloud resources or infrastructure commands are modified."
+}

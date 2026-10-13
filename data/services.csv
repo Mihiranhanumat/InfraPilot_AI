@@ -1,0 +1,6 @@
+service,depends_on,criticality
+frontend,order_api,high
+order_api,database,critical
+order_api,payment_service,high
+order_api,inventory_service,medium
+order_api,cache,high

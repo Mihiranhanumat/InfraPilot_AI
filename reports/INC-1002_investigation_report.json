@@ -1,0 +1,285 @@
+{
+  "incident_id": "INC-1002",
+  "title": "Deployment-Induced Order API Regression",
+  "generated_at": "2026-10-13 23:55:14 UTC",
+  "status": "Validated hypothesis",
+  "symptoms": [
+    "Surge in HTTP 500 Internal Server Errors on order checkout endpoint immediately following mid-day service update."
+  ],
+  "critic_decision": "PASS",
+  "confidence_label": "Heuristic Evidence Score (Transparent Multi-Source Metric)",
+  "leading_hypothesis": {
+    "rank": 1,
+    "candidate_service": "order_api",
+    "claim": "Order API release regression (v2.4.1 deployment) introduced unhandled exceptions leading to HTTP 500 error surge.",
+    "heuristic_score": 0.81,
+    "score_breakdown": {
+      "metric_support": 0.77,
+      "log_support": 1.0,
+      "dependency_support": 0.7,
+      "timeline_support": 0.75,
+      "contradiction_penalty": 0.0,
+      "aggregate_heuristic_score": 0.81
+    },
+    "supporting_evidence_ids": [
+      "METRIC-ORD-01",
+      "LOG-ORD-01",
+      "LOG-ORD-02",
+      "EVENT-ORD-01",
+      "EVENT-ORD-02"
+    ],
+    "contradicting_evidence_ids": [],
+    "timeline_fit": "order_api anomaly synchronized with symptom onset at 2026-10-13T14:13:00.",
+    "dependency_fit": "order_api is an immediate endpoint experiencing reported symptoms.",
+    "reasoning": "Order API error rate spiked from baseline immediately following deployment v2.4.1. Upstream database and cache metrics remained completely healthy, confirming the fault is localized to the newly deployed application code.",
+    "limitations": "Heuristic evidence score based on synthetic local telemetry. Correlations establish strong hypothesis, but causality is supported rather than definitively proven without internal tracing/query-plan telemetry."
+  },
+  "all_hypotheses": [
+    {
+      "rank": 1,
+      "candidate_service": "order_api",
+      "claim": "Order API release regression (v2.4.1 deployment) introduced unhandled exceptions leading to HTTP 500 error surge.",
+      "heuristic_score": 0.81,
+      "score_breakdown": {
+        "metric_support": 0.77,
+        "log_support": 1.0,
+        "dependency_support": 0.7,
+        "timeline_support": 0.75,
+        "contradiction_penalty": 0.0,
+        "aggregate_heuristic_score": 0.81
+      },
+      "supporting_evidence_ids": [
+        "METRIC-ORD-01",
+        "LOG-ORD-01",
+        "LOG-ORD-02",
+        "EVENT-ORD-01",
+        "EVENT-ORD-02"
+      ],
+      "contradicting_evidence_ids": [],
+      "timeline_fit": "order_api anomaly synchronized with symptom onset at 2026-10-13T14:13:00.",
+      "dependency_fit": "order_api is an immediate endpoint experiencing reported symptoms.",
+      "reasoning": "Order API error rate spiked from baseline immediately following deployment v2.4.1. Upstream database and cache metrics remained completely healthy, confirming the fault is localized to the newly deployed application code.",
+      "limitations": "Heuristic evidence score based on synthetic local telemetry. Correlations establish strong hypothesis, but causality is supported rather than definitively proven without internal tracing/query-plan telemetry."
+    },
+    {
+      "rank": 2,
+      "candidate_service": "frontend",
+      "claim": "Service 'frontend' exhibits anomalous signals that correlate with the ongoing incident.",
+      "heuristic_score": 0.75,
+      "score_breakdown": {
+        "metric_support": 0.75,
+        "log_support": 0.8,
+        "dependency_support": 0.7,
+        "timeline_support": 0.75,
+        "contradiction_penalty": 0.0,
+        "aggregate_heuristic_score": 0.75
+      },
+      "supporting_evidence_ids": [
+        "METRIC-FRO-02",
+        "LOG-ORD-01"
+      ],
+      "contradicting_evidence_ids": [],
+      "timeline_fit": "frontend anomaly synchronized with symptom onset at 2026-10-13T14:13:00.",
+      "dependency_fit": "frontend is an immediate endpoint experiencing reported symptoms.",
+      "reasoning": "Telemetry signals on frontend exhibit divergence from baseline. Supporting evidence IDs: METRIC-FRO-02, LOG-ORD-01.",
+      "limitations": "Heuristic evidence score based on synthetic local telemetry. Correlations establish strong hypothesis, but causality is supported rather than definitively proven without internal tracing/query-plan telemetry."
+    }
+  ],
+  "evidence_trail": [
+    {
+      "evidence_id": "METRIC-ORD-01",
+      "source_type": "metric",
+      "service": "order_api",
+      "description": "order_api error_rate_pct rose from baseline 0.16% to 27.47% (+17070.0%), earliest onset 2026-10-13T14:13:00.",
+      "support_type": "supports",
+      "timestamp": "2026-10-13T14:13:00",
+      "confidence_weight": 0.77,
+      "limitations": "Synthetically sampled metrics over 1-minute intervals."
+    },
+    {
+      "evidence_id": "METRIC-FRO-02",
+      "source_type": "metric",
+      "service": "frontend",
+      "description": "frontend error_rate_pct rose from baseline 0.11% to 24.67% (+22327.6%), earliest onset 2026-10-13T14:13:00.",
+      "support_type": "supports",
+      "timestamp": "2026-10-13T14:13:00",
+      "confidence_weight": 0.75,
+      "limitations": "Synthetically sampled metrics over 1-minute intervals."
+    },
+    {
+      "evidence_id": "EVENT-ORD-01",
+      "source_type": "event",
+      "service": "order_api",
+      "description": "Operational event [DEPLOYMENT]: Order API deployed release v2.4.1 (commit sha 78ab9ef) by CI/CD pipeline.",
+      "support_type": "supports",
+      "timestamp": "2026-10-13T14:12:00",
+      "confidence_weight": 0.9,
+      "limitations": "Operational events logged via automated CI/CD and monitoring hooks."
+    },
+    {
+      "evidence_id": "EVENT-ORD-02",
+      "source_type": "event",
+      "service": "order_api",
+      "description": "Operational event [ALERT_FIRED]: HighErrorRateBreach: Order API 5xx errors reached 28%.",
+      "support_type": "supports",
+      "timestamp": "2026-10-13T14:14:15",
+      "confidence_weight": 0.7,
+      "limitations": "Operational events logged via automated CI/CD and monitoring hooks."
+    },
+    {
+      "evidence_id": "LOG-ORD-01",
+      "source_type": "log",
+      "service": "order_api",
+      "description": "Log cluster 'HTTP_5XX_ERROR' (12 occurrences, ERROR) on order_api, frontend. Sample: \"HTTP 500 Internal Server Error returned for POST /api/v1/orders/checkout\"",
+      "support_type": "supports",
+      "timestamp": "2026-10-13T14:13:00",
+      "confidence_weight": 0.85,
+      "limitations": "Logs are untrusted telemetry; messages parsed as evidence, never executed."
+    },
+    {
+      "evidence_id": "LOG-ORD-02",
+      "source_type": "log",
+      "service": "order_api",
+      "description": "Log cluster 'APPLICATION_EXCEPTION' (6 occurrences, ERROR) on order_api. Sample: \"NullPointerException at com.shop.order.OrderValidator.validateDiscountCode(OrderValidator.java:142)\"",
+      "support_type": "supports",
+      "timestamp": "2026-10-13T14:13:00",
+      "confidence_weight": 0.85,
+      "limitations": "Logs are untrusted telemetry; messages parsed as evidence, never executed."
+    },
+    {
+      "evidence_id": "DEP-FRO-01",
+      "source_type": "dependency",
+      "service": "frontend",
+      "description": "Topology verification: 'frontend' is an upstream dependency of symptom services (order_api, frontend). Call paths: frontend (direct symptom).",
+      "support_type": "supports",
+      "timestamp": null,
+      "confidence_weight": 0.9,
+      "limitations": "Static service dependency configuration from services.csv."
+    },
+    {
+      "evidence_id": "DEP-ORD-02",
+      "source_type": "dependency",
+      "service": "order_api",
+      "description": "Topology verification: 'order_api' is an upstream dependency of symptom services (order_api, frontend). Call paths: order_api (direct symptom); frontend -> order_api.",
+      "support_type": "supports",
+      "timestamp": null,
+      "confidence_weight": 0.9,
+      "limitations": "Static service dependency configuration from services.csv."
+    },
+    {
+      "evidence_id": "DEP-DAT-03",
+      "source_type": "dependency",
+      "service": "database",
+      "description": "Topology verification: 'database' is an upstream dependency of symptom services (order_api, frontend). Call paths: order_api -> database; frontend -> order_api -> database.",
+      "support_type": "supports",
+      "timestamp": null,
+      "confidence_weight": 0.9,
+      "limitations": "Static service dependency configuration from services.csv."
+    },
+    {
+      "evidence_id": "DEP-PAY-04",
+      "source_type": "dependency",
+      "service": "payment_service",
+      "description": "Topology verification: 'payment_service' is an upstream dependency of symptom services (order_api, frontend). Call paths: order_api -> payment_service; frontend -> order_api -> payment_service.",
+      "support_type": "supports",
+      "timestamp": null,
+      "confidence_weight": 0.9,
+      "limitations": "Static service dependency configuration from services.csv."
+    },
+    {
+      "evidence_id": "DEP-INV-05",
+      "source_type": "dependency",
+      "service": "inventory_service",
+      "description": "Topology verification: 'inventory_service' is an upstream dependency of symptom services (order_api, frontend). Call paths: order_api -> inventory_service; frontend -> order_api -> inventory_service.",
+      "support_type": "supports",
+      "timestamp": null,
+      "confidence_weight": 0.9,
+      "limitations": "Static service dependency configuration from services.csv."
+    },
+    {
+      "evidence_id": "DEP-CAC-06",
+      "source_type": "dependency",
+      "service": "cache",
+      "description": "Topology verification: 'cache' is an upstream dependency of symptom services (order_api, frontend). Call paths: order_api -> cache; frontend -> order_api -> cache.",
+      "support_type": "supports",
+      "timestamp": null,
+      "confidence_weight": 0.9,
+      "limitations": "Static service dependency configuration from services.csv."
+    },
+    {
+      "evidence_id": "DIAG-ORD-01",
+      "source_type": "diagnostic",
+      "service": "order_api",
+      "description": "Read-only diagnostic battery completed: 3/3 active checks passed for hypothesis 'Order API release regression (v2.4.1 deployment) introduced unhandled exceptions leading to HTTP 500 error surge.'.",
+      "support_type": "supports",
+      "timestamp": null,
+      "confidence_weight": 0.9,
+      "limitations": "Non-intrusive historical window diagnostics only."
+    }
+  ],
+  "diagnostics": [
+    {
+      "test_name": "Topological Viability Test",
+      "passed": true,
+      "details": "Candidate 'order_api' has valid caller paths to ['order_api', 'frontend']",
+      "evidence_ids": []
+    },
+    {
+      "test_name": "Event Window Impact (DEPLOYMENT)",
+      "passed": true,
+      "details": "Post-event metric surged from 0.16 to 24.45 within 5m of event at 2026-10-13T14:12:00.",
+      "evidence_ids": [
+        "EVENT-ORD-01"
+      ]
+    },
+    {
+      "test_name": "Log Correlation Verification",
+      "passed": true,
+      "details": "Found 12 logs matching 'timeout|error|exception|saturated|eviction' on service order_api after 2026-10-13T14:12:00.",
+      "evidence_ids": [
+        "LOG-ORD-01",
+        "LOG-ORD-02"
+      ]
+    }
+  ],
+  "recovery_recommendations": [
+    {
+      "step_number": 1,
+      "action": "Inspect git diff and release commit history for deployment v2.4.1 (OrderValidator.java:142).",
+      "category": "DEPLOYMENT_ROLLBACK_VERIFICATION",
+      "target_service": "order_api",
+      "rationale": "Isolate the NullPointerException introduced in discount code validation logic.",
+      "risk_level": "LOW",
+      "is_reversible": true,
+      "post_verification_check": "Confirm regression reproduction in staging environment.",
+      "status": "RECOMMENDATION_ONLY",
+      "requires_human_approval": true
+    },
+    {
+      "step_number": 2,
+      "action": "[BLOCKED BY SAFETY POLICY] Execute controlled deployment rollback to previous stable artifact v2.4.0 via CI/CD pipeline.",
+      "category": "DEPLOYMENT_ROLLBACK_VERIFICATION",
+      "target_service": "order_api",
+      "rationale": "Original suggestion blocked: Direct shell execution is strictly prohibited by safety policy.",
+      "risk_level": "HIGH",
+      "is_reversible": true,
+      "post_verification_check": "Verify HTTP 500 errors subside to 0% immediately following rollback pod rotation.",
+      "status": "RECOMMENDATION_ONLY",
+      "requires_human_approval": true
+    },
+    {
+      "step_number": 3,
+      "action": "Monitor Order API ingress error rate and frontend checkout completions post-rollback.",
+      "category": "DOWNSTREAM_MONITORING",
+      "target_service": "order_api",
+      "rationale": "Ensure users can place orders without errors.",
+      "risk_level": "LOW",
+      "is_reversible": true,
+      "post_verification_check": "Check frontend checkout conversion metrics return to baseline.",
+      "status": "RECOMMENDATION_ONLY",
+      "requires_human_approval": true
+    }
+  ],
+  "limitations_disclaimer": "Synthetically generated local telemetry. Correlations establish strong hypotheses, but causality is supported rather than definitively proven. No production claims or absolute certainty guaranteed.",
+  "safety_notice": "SIMULATION ONLY: Read-only diagnostics. No real cloud resources or infrastructure commands are modified."
+}
